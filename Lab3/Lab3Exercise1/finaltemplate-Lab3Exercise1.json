@@ -1,0 +1,174 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "sites_youraliasfakeapplogging_name": {
+      "defaultValue": "youraliasfakeapplogging",
+      "type": "String"
+    },
+    "storageAccounts_youraliasfakestorage1_name": {
+      "defaultValue": "youraliassfakestorage1",
+      "type": "String"
+    },
+    "serverfarms_ServicePlandafebd84_b48b_name": {
+      "defaultValue": "ServicePlandafebd84-b48b",
+      "type": "String"
+    },
+    "config_log_name": {
+      "defaultValue": "logs",
+      "type": "String"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "comments": "Generalized from resource: '/subscriptions/FakeSubscriptionId/resourceGroups/myfakerg/providers/Microsoft.Storage/storageAccounts/youraliasfakestorage1'.",
+      "type": "Microsoft.Storage/storageAccounts",
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "kind": "Storage",
+      "name": "[parameters('storageAccounts_youraliasfakestorage1_name')]",
+      "apiVersion": "2018-02-01",
+      "location": "centralus",
+      "tags": {},
+      "scale": null,
+      "properties": {
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "virtualNetworkRules": [],
+          "ipRules": [],
+          "defaultAction": "Allow"
+        },
+        "supportsHttpsTrafficOnly": false,
+        "encryption": {
+          "services": {
+            "file": {
+              "enabled": true
+            },
+            "blob": {
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        }
+      },
+      "dependsOn": []
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/FakeSubscriptionId/resourceGroups/myfakerg/providers/Microsoft.Web/serverfarms/ServicePlandafebd84-b48b'.",
+      "type": "Microsoft.Web/serverfarms",
+      "sku": {
+        "name": "F1",
+        "tier": "Free",
+        "size": "F1",
+        "family": "F",
+        "capacity": 0
+      },
+      "kind": "app",
+      "name": "[parameters('serverfarms_ServicePlandafebd84_b48b_name')]",
+      "apiVersion": "2016-09-01",
+      "location": "Central US",
+      "scale": null,
+      "properties": {
+        "name": "[parameters('serverfarms_ServicePlandafebd84_b48b_name')]",
+        "workerTierName": null,
+        "adminSiteName": null,
+        "hostingEnvironmentProfile": null,
+        "perSiteScaling": false,
+        "reserved": false,
+        "targetWorkerCount": 0,
+        "targetWorkerSizeId": 0
+      },
+      "dependsOn": []
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "kind": "app",
+      "name": "[parameters('sites_youraliasfakeapplogging_name')]",
+      "apiVersion": "2016-08-01",
+      "location": "Central US",
+      "scale": null,
+      "properties": {
+        "enabled": true,
+        "hostNameSslStates": [
+          {
+            "name": "[concat(parameters('sites_youraliasfakeapplogging_name'),'.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "virtualIP": null,
+            "thumbprint": null,
+            "toUpdate": null,
+            "hostType": "Standard"
+          },
+          {
+            "name": "[concat(parameters('sites_youraliasfakeapplogging_name'),'.scm.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "virtualIP": null,
+            "thumbprint": null,
+            "toUpdate": null,
+            "hostType": "Repository"
+          }
+        ],
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ServicePlandafebd84_b48b_name'))]",
+        "reserved": false,
+        "siteConfig": null,
+        "scmSiteAlsoStopped": false,
+        "hostingEnvironmentProfile": null,
+        "clientAffinityEnabled": true,
+        "clientCertEnabled": false,
+        "hostNamesDisabled": false,
+        "containerSize": 0,
+        "dailyMemoryTimeQuota": 0,
+        "cloningInfo": null
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ServicePlandafebd84_b48b_name'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Web/sites/config",
+      "name": "[concat(parameters('sites_youraliasfakeapplogging_name'), '/', parameters('config_log_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "Central US",
+      "scale": null,
+      "properties": {
+        "applicationLogs": {
+          "fileSystem": {
+            "level": "Off"
+          },
+          "azureTableStorage": {
+            "level": "Off",
+            "sasUrl": null
+          },
+          "azureBlobStorage": {
+            "level": "Off",
+            "sasUrl": null,
+            "retentionInDays": 1
+          }
+        },
+        "httpLogs": {
+          "fileSystem": {
+            "retentionInMb": 35,
+            "retentionInDays": 1,
+            "enabled": false
+          },
+          "azureBlobStorage": {
+            "sasUrl": "https://fakestorageaccount.blob.core.windows.net/fakecontainer?sv=2015-04-05&sr=c&sig=MsRU1uIl5vUvwbWfAOf3MHgh2Op6NW4MJPswA9dFf%2Fs%3D&st=2018-06-09T06:05:59Z&se=2218-06-09T06:05:59Z&sp=rwdl",
+            "retentionInDays": 1,
+            "enabled": true
+          }
+        },
+        "failedRequestsTracing": {
+          "enabled": false
+        },
+        "detailedErrorMessages": {
+          "enabled": false
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_youraliasfakeapplogging_name'))]"
+      ]
+    }
+  ]
+}

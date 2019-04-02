@@ -1,0 +1,1232 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "certificatePfxBase64": {
+      "type": "string"
+    },
+    "certificatePfxPassword": {
+      "type": "string"
+    },
+    "certificateName": {
+      "type": "string"
+    },
+    "customHostName": {
+      "type": "string"
+    },
+    "env": {
+      "type": "String"
+    },
+    "location": {
+      "defaultValue": "eastus",
+      "type": "String"
+    },
+    "sites_fake2_name": {
+      "type": "String"
+    },
+    "sites_fake_api_name": {
+      "type": "String"
+    },
+    "config_web_name": {
+      "type": "String"
+    },
+    "sites_fake_fe_name": {
+      "type": "String"
+    },
+    "serverfarms_fake_plan_fn": {
+      "type": "String"
+    },
+    "config_web_name_1": {
+      "type": "String"
+    },
+    "config_web_name_2": {
+      "type": "String"
+    },
+    "storageAccounts_fake3_name": {
+      "type": "String"
+    },
+    "config_web_name_3": {
+      "type": "String"
+    },
+    "config_web_name_4": {
+      "type": "String"
+    },
+    "deployments_123456789101112_name": {
+      "type": "String"
+    },
+    "deployments_123456789101113_name": {
+      "type": "String"
+    },
+    "deployments_123456789101114_name": {
+      "type": "String"
+    },
+    "deployments_123456789101115_name": {
+      "type": "String"
+    },
+    "deployments_123456789101116_name": {
+      "type": "String"
+    },
+    "deployments_123456789101117_name": {
+      "type": "String"
+    },
+    "deployments_123456789101118_name": {
+      "type": "String"
+    },
+    "deployments_123456789101119_name": {
+      "type": "String"
+    },
+    "deployments_123456789101120_name": {
+      "type": "String"
+    },
+    "deployments_123456789101121_name": {
+      "type": "String"
+    },
+    "deployments_123456789101122_name": {
+      "type": "String"
+    },
+    "deployments_123456789101153_name": {
+      "type": "String"
+    },
+    "deployments_123456789101137_name": {
+      "type": "String"
+    },
+    "deployments_123456789101136_name": {
+      "type": "String"
+    },
+    "deployments_123456789101124_name": {
+      "type": "String"
+    },
+    "deployments_123456789101162_name": {
+      "type": "String"
+    },
+    "deployments_123456789101163_name": {
+      "type": "String"
+    },
+    "deployments_123456789101164_name": {
+      "type": "String"
+    },
+    "deployments_123456789101165_name": {
+      "type": "String"
+    },
+    "deployments_123456789101166_name": {
+      "type": "String"
+    },
+    "deployments_123456789101167_name": {
+      "type": "String"
+    },
+    "hostNameBindings_fake2.azurewebsites.net_name": {
+      "type": "String"
+    },
+    "hostNameBindings_fake_fe.azurewebsites.net_name": {
+      "type": "String"
+    },
+    "fakesqlAdminLogin": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fakesqlAdminLoginPassword": {
+      "type": "securestring"
+    },
+    "fakesqldisplayName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fakesqldisplayCollation": {
+      "type": "string",
+      "minLength": 1,
+      "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
+    },
+    "fakesqldisplayEdition": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "Standard",
+        "Premium"
+      ]
+    },
+    "fakesqldisplayRequestedServiceObjectiveName": {
+      "type": "string",
+      "defaultValue": "Basic",
+      "allowedValues": [
+        "Basic",
+        "S0",
+        "S1",
+        "S2",
+        "P1",
+        "P2",
+        "P3"
+      ],
+      "metadata": {
+        "description": "Describes the performance level for Edition"
+      }
+    }
+  },
+  "variables": {
+    "fakesqlName": "[concat('fakesql', uniqueString(resourceGroup().id))]"
+  },
+  "resources": [
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourceGroups/fake-rg/providers/Microsoft.Storage/storageAccounts/fakedatatest'.",
+      "type": "Microsoft.Storage/storageAccounts",
+      "sku": {
+        "name": "Standard_RAGRS",
+        "tier": "Standard"
+      },
+      "kind": "StorageV2",
+      "name": "[parameters('storageAccounts_fake3_name')]",
+      "apiVersion": "2017-10-01",
+      "location": "[parameters('location')]",
+      "tags": {
+        "ENV": "[parameters('env')]"
+      },
+      "scale": null,
+      "properties": {
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "virtualNetworkRules": [],
+          "ipRules": [],
+          "defaultAction": "Allow"
+        },
+        "supportsHttpsTrafficOnly": false,
+        "encryption": {
+          "services": {
+            "file": {
+              "enabled": true
+            },
+            "blob": {
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        },
+        "accessTier": "Hot"
+      },
+      "dependsOn": []
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourceGroups/fake-rg/providers/Microsoft.Web/serverfarms/fake-plan-fn'.",
+      "type": "Microsoft.Web/serverfarms",
+      "sku": {
+        "name": "S1",
+        "tier": "Standard",
+        "size": "1",
+        "family": "S",
+        "capacity": 1
+      },
+      "kind": "linux",
+      "name": "[parameters('serverfarms_fake_plan_fn')]",
+      "apiVersion": "2016-09-01",
+      "location": "East US",
+      "tags": {
+        "ENV": "[parameters('env')]"
+      },
+      "scale": null,
+      "properties": {
+        "name": "[parameters('serverfarms_fake_plan_fn')]",
+        "workerTierName": null,
+        "adminSiteName": null,
+        "hostingEnvironmentProfile": null,
+        "perSiteScaling": false
+      },
+      "dependsOn": []
+    },
+    {
+      "type": "Microsoft.Web/certificates",
+      "name": "[parameters('certificateName')]",
+      "apiVersion": "2016-03-01",
+      "location": "East US",
+      "properties": {
+        "hostNames": [
+          "[parameters('customHostName')]",
+        ],
+        "pfxBlob": "[parameters('certificatePfxBase64')]",
+        "password": "[parameters('certificatePfxPassword')]"
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/hostnameBindings",
+      "name": "[concat(parameters('sites_fake_api_name'), '/', parameters('customHostname'))]",
+      "apiVersion": "2016-03-01",
+      "location": "East US",
+      "properties": {
+        "sslState": "SniEnabled",
+        "thumbprint": "[reference(resourceId('Microsoft.Web/certificates', parameters('certificateName'))).Thumbprint]"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Web/certificates/',parameters('certificateName'))]",
+        "[resourceId('Microsoft.Web/sites/',parameters('sites_fake_api_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourceGroups/fake-rg/providers/Microsoft.Web/sites/fake-fe-test'.",
+      "type": "Microsoft.Web/sites",
+      "kind": "app",
+      "name": "[parameters('sites_fake_fe_name')]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "tags": {
+        "ENV": "[parameters('env')]"
+      },
+      "scale": null,
+      "properties": {
+        "enabled": true,
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_fake_plan_fn'))]",
+        "reserved": true,
+        "siteConfig": null,
+        "scmSiteAlsoStopped": false,
+        "hostingEnvironmentProfile": null,
+        "clientAffinityEnabled": true,
+        "clientCertEnabled": false,
+        "hostNamesDisabled": false,
+        "containerSize": 0,
+        "dailyMemoryTimeQuota": 0,
+        "cloningInfo": null
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Web/certificates/',parameters('certificateName'))]",
+        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_fake_plan_fn'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourceGroups/fake-rg/providers/Microsoft.Web/sites/fake-api-test'.",
+      "type": "Microsoft.Web/sites",
+      "kind": "app",
+      "name": "[parameters('sites_fake_api_name')]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "tags": {
+        "ENV": "[parameters('env')]"
+      },
+      "scale": null,
+      "properties": {
+        "enabled": true,
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_fake_plan_fn'))]",
+        "reserved": true,
+        "siteConfig": null,
+        "scmSiteAlsoStopped": false,
+        "hostingEnvironmentProfile": null,
+        "clientAffinityEnabled": true,
+        "clientCertEnabled": false,
+        "hostNamesDisabled": false,
+        "containerSize": 0,
+        "dailyMemoryTimeQuota": 0,
+        "cloningInfo": null
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_fake_plan_fn'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourceGroups/fake-rg/providers/Microsoft.Web/sites/fake2-test'.",
+      "type": "Microsoft.Web/sites",
+      "kind": "app",
+      "name": "[parameters('sites_fake2_name')]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "enabled": true,
+        "hostNameSslStates": [
+          {
+            "name": "[concat(parameters('sites_fake2_name'),'.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "virtualIP": null,
+            "thumbprint": null,
+            "toUpdate": null,
+            "hostType": "Standard"
+          },
+          {
+            "name": "[concat(parameters('sites_fake2_name'),'.scm.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "virtualIP": null,
+            "thumbprint": null,
+            "toUpdate": null,
+            "hostType": "Repository"
+          }
+        ],
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_fake_plan_fn'))]",
+        "reserved": true,
+        "siteConfig": null,
+        "scmSiteAlsoStopped": false,
+        "hostingEnvironmentProfile": null,
+        "clientAffinityEnabled": true,
+        "clientCertEnabled": false,
+        "hostNamesDisabled": false,
+        "containerSize": 0,
+        "dailyMemoryTimeQuota": 0,
+        "cloningInfo": null
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_fake_plan_fn'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourceGroups/fake-rg/providers/Microsoft.Web/sites/fake-fe-test/config/web'.",
+      "type": "Microsoft.Web/sites/config",
+      "name": "[concat(parameters('sites_fake_fe_name'), '/', parameters('config_web_name_4'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "tags": {
+        "ENV": "[parameters('env')]"
+      },
+      "scale": null,
+      "properties": {
+        "numberOfWorkers": 1,
+        "defaultDocuments": [
+          "Default.htm",
+          "Default.html",
+          "Default.asp",
+          "index.htm",
+          "index.html",
+          "iisstart.htm",
+          "default.aspx",
+          "index.php",
+          "hostingstart.html"
+        ],
+        "netFrameworkVersion": "v4.0",
+        "phpVersion": "",
+        "pythonVersion": "",
+        "nodeVersion": "",
+        "linuxFxVersion": "DOCKER|fakeregistry.azurecr.io/fake-fe:67",
+        "windowsFxVersion": null,
+        "requestTracingEnabled": false,
+        "remoteDebuggingEnabled": false,
+        "remoteDebuggingVersion": "VS2012",
+        "httpLoggingEnabled": true,
+        "logsDirectorySizeLimit": 35,
+        "detailedErrorLoggingEnabled": false,
+        "publishingUsername": "[concat('$', parameters('sites_fake_fe_name'))]",
+        "publishingPassword": null,
+        "appSettings": null,
+        "metadata": null,
+        "connectionStrings": null,
+        "machineKey": null,
+        "handlerMappings": null,
+        "documentRoot": null,
+        "scmType": "GitHub",
+        "use32BitWorkerProcess": true,
+        "webSocketsEnabled": false,
+        "alwaysOn": false,
+        "javaVersion": null,
+        "javaContainer": null,
+        "javaContainerVersion": null,
+        "appCommandLine": "",
+        "managedPipelineMode": "Integrated",
+        "virtualApplications": [
+          {
+            "virtualPath": "/",
+            "physicalPath": "site\\wwwroot",
+            "preloadEnabled": false,
+            "virtualDirectories": null
+          }
+        ],
+        "winAuthAdminState": 0,
+        "winAuthTenantState": 0,
+        "customAppPoolIdentityAdminState": false,
+        "customAppPoolIdentityTenantState": false,
+        "runtimeADUser": null,
+        "runtimeADUserPassword": null,
+        "loadBalancing": "LeastRequests",
+        "routingRules": [],
+        "experiments": {
+          "rampUpRules": []
+        },
+        "limits": null,
+        "autoHealEnabled": false,
+        "autoHealRules": null,
+        "tracingOptions": null,
+        "vnetName": "",
+        "siteAuthEnabled": false,
+        "siteAuthSettings": {
+          "enabled": null,
+          "unauthenticatedClientAction": null,
+          "tokenStoreEnabled": null,
+          "allowedExternalRedirectUrls": null,
+          "defaultProvider": null,
+          "clientId": null,
+          "clientSecret": null,
+          "issuer": null,
+          "allowedAudiences": null,
+          "additionalLoginParams": null,
+          "isAadAutoProvisioned": false,
+          "googleClientId": null,
+          "googleClientSecret": null,
+          "googleOAuthScopes": null,
+          "facebookAppId": null,
+          "facebookAppSecret": null,
+          "facebookOAuthScopes": null,
+          "twitterConsumerKey": null,
+          "twitterConsumerSecret": null,
+          "microsoftAccountClientId": null,
+          "microsoftAccountClientSecret": null,
+          "microsoftAccountOAuthScopes": null
+        },
+        "cors": null,
+        "push": null,
+        "apiDefinition": null,
+        "autoSwapSlotName": null,
+        "localMySqlEnabled": false,
+        "managedServiceIdentityId": null,
+        "xManagedServiceIdentityId": null,
+        "ipSecurityRestrictions": null,
+        "http20Enabled": false,
+        "minTlsVersion": "1.0",
+        "ftpsState": "AllAllowed"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_fe_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-fe-test/deployments/123456789101153'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_fe_name'), '/', parameters('deployments_123456789101153_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101153_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"660a222f72401cc8108f73fcf798084b0b84532e\",\"buildId\":\"67\",\"releaseId\":\"29\",\"buildNumber\":\"67\",\"releaseName\":\"Release-16\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-05-05T02:57:36.742109Z",
+        "endTime": "2018-05-05T02:57:36.742109Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_fe_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-fe-test/deployments/123456789101137'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_fe_name'), '/', parameters('deployments_123456789101137_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101137_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"71ef3eb73b7336dc391066693d248abf787930e1\",\"buildId\":\"61\",\"releaseId\":\"27\",\"buildNumber\":\"61\",\"releaseName\":\"Release-8\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-05-21T15:41:59.429463Z",
+        "endTime": "2018-05-21T15:41:59.429463Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_fe_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-fe-test/deployments/123456789101136'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_fe_name'), '/', parameters('deployments_123456789101136_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101136_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"a109b90883eb6bc6a2d63aca22376d100b2e84d2\",\"buildId\":\"60\",\"releaseId\":\"26\",\"buildNumber\":\"60\",\"releaseName\":\"Release-7\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-05-21T15:27:28.35441Z",
+        "endTime": "2018-05-21T15:27:28.35441Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_fe_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-fe-test/deployments/123456789101124'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_fe_name'), '/', parameters('deployments_123456789101124_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101124_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"ebac8863358fcde3ecab41bbe4ef831a9b4d481a\",\"buildId\":\"59\",\"releaseId\":\"25\",\"buildNumber\":\"59\",\"releaseName\":\"Release-6\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-05-21T00:16:05.695159Z",
+        "endTime": "2018-05-21T00:16:05.695159Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_fe_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-fe-test/deployments/123456789101162'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_fe_name'), '/', parameters('deployments_123456789101162_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101162_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"479ee76c8fc261f605f0bf3e2ccd63ae94ba879b\",\"buildId\":\"58\",\"releaseId\":\"24\",\"buildNumber\":\"58\",\"releaseName\":\"Release-5\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-06-02T15:13:34.339118Z",
+        "endTime": "2018-06-02T15:13:34.339118Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_fe_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-fe-test/deployments/123456789101163'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_fe_name'), '/', parameters('deployments_123456789101163_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101163_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"8d6779046f663c01f1f1ad9ef18fc3c4595aba37\",\"buildId\":\"56\",\"releaseId\":\"23\",\"buildNumber\":\"56\",\"releaseName\":\"Release-4\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-05-21T19:44:30.823104Z",
+        "endTime": "2018-05-21T19:44:30.823104Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_fe_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-fe-test/deployments/123456789101164'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_fe_name'), '/', parameters('deployments_123456789101164_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101164_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"031d39cad485ea1bf880450d1201458ed47395ca\",\"buildId\":\"55\",\"releaseId\":\"22\",\"buildNumber\":\"55\",\"releaseName\":\"Release-3\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-05-23T19:07:45.296808Z",
+        "endTime": "2018-05-23T19:07:45.296808Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_fe_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-fe-test/deployments/123456789101165'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_fe_name'), '/', parameters('deployments_123456789101165_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101165_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"f843e41f3f55b0d645242e4b01231065fd6527f2\",\"buildId\":\"54\",\"releaseId\":\"21\",\"buildNumber\":\"54\",\"releaseName\":\"Release-2\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-05-23T18:41:17.189103Z",
+        "endTime": "2018-05-23T18:41:17.189103Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_fe_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-fe-test/deployments/123456789101166'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_fe_name'), '/', parameters('deployments_123456789101166_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101166_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"5cdcb729faa3d7ee2a18703a56ea0562bf59a68e\",\"buildId\":\"53\",\"releaseId\":\"20\",\"buildNumber\":\"53\",\"releaseName\":\"Release-1\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-05-23T18:11:14.13044Z",
+        "endTime": "2018-05-23T18:11:14.13044Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_fe_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-fe-test/deployments/123456789101167'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_fe_name'), '/', parameters('deployments_123456789101167_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101167_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"b59495a08982c75e998ef92980b002a6ad1a3981\",\"buildId\":\"51\",\"releaseId\":\"19\",\"buildNumber\":\"51\",\"releaseName\":\"Release-15\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-05-21T14:32:38.416348Z",
+        "endTime": "2018-05-21T14:32:38.416348Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_fe_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourceGroups/fake-rg/providers/Microsoft.Web/sites/fake-fe-test/hostNameBindings/fake-fe-test.azurewebsites.net'.",
+      "type": "Microsoft.Web/sites/hostNameBindings",
+      "name": "[concat(parameters('sites_fake_fe_name'), '/', parameters('hostNameBindings_fake_fe.azurewebsites.net_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "siteName": "[parameters('sites_fake_fe_name')]",
+        "domainId": null,
+        "hostNameType": "Verified"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_fe_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourceGroups/fake-rg/providers/Microsoft.Web/sites/fake-api-test/config/web'.",
+      "type": "Microsoft.Web/sites/config",
+      "name": "[concat(parameters('sites_fake_api_name'), '/', parameters('config_web_name_2'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "tags": {
+        "ENV": "[parameters('env')]"
+      },
+      "scale": null,
+      "properties": {
+        "numberOfWorkers": 1,
+        "defaultDocuments": [
+          "Default.htm",
+          "Default.html",
+          "Default.asp",
+          "index.htm",
+          "index.html",
+          "iisstart.htm",
+          "default.aspx",
+          "index.php",
+          "hostingstart.html"
+        ],
+        "netFrameworkVersion": "v4.0",
+        "phpVersion": "",
+        "pythonVersion": "",
+        "nodeVersion": "",
+        "linuxFxVersion": "DOCKER|fakeregistry.azurecr.io/fakeapi:67",
+        "windowsFxVersion": null,
+        "requestTracingEnabled": false,
+        "remoteDebuggingEnabled": false,
+        "remoteDebuggingVersion": "VS2012",
+        "httpLoggingEnabled": true,
+        "logsDirectorySizeLimit": 35,
+        "detailedErrorLoggingEnabled": false,
+        "publishingUsername": "[concat('$', parameters('sites_fake_api_name'))]",
+        "publishingPassword": null,
+        "appSettings": null,
+        "metadata": null,
+        "connectionStrings": null,
+        "machineKey": null,
+        "handlerMappings": null,
+        "documentRoot": null,
+        "scmType": "GitHub",
+        "use32BitWorkerProcess": true,
+        "webSocketsEnabled": false,
+        "alwaysOn": false,
+        "javaVersion": null,
+        "javaContainer": null,
+        "javaContainerVersion": null,
+        "appCommandLine": "",
+        "managedPipelineMode": "Integrated",
+        "virtualApplications": [
+          {
+            "virtualPath": "/",
+            "physicalPath": "site\\wwwroot",
+            "preloadEnabled": false,
+            "virtualDirectories": null
+          }
+        ],
+        "winAuthAdminState": 0,
+        "winAuthTenantState": 0,
+        "customAppPoolIdentityAdminState": false,
+        "customAppPoolIdentityTenantState": false,
+        "runtimeADUser": null,
+        "runtimeADUserPassword": null,
+        "loadBalancing": "LeastRequests",
+        "routingRules": [],
+        "experiments": {
+          "rampUpRules": []
+        },
+        "limits": null,
+        "autoHealEnabled": false,
+        "autoHealRules": null,
+        "tracingOptions": null,
+        "vnetName": "",
+        "siteAuthEnabled": false,
+        "siteAuthSettings": {
+          "enabled": null,
+          "unauthenticatedClientAction": null,
+          "tokenStoreEnabled": null,
+          "allowedExternalRedirectUrls": null,
+          "defaultProvider": null,
+          "clientId": null,
+          "clientSecret": null,
+          "issuer": null,
+          "allowedAudiences": null,
+          "additionalLoginParams": null,
+          "isAadAutoProvisioned": false,
+          "googleClientId": null,
+          "googleClientSecret": null,
+          "googleOAuthScopes": null,
+          "facebookAppId": null,
+          "facebookAppSecret": null,
+          "facebookOAuthScopes": null,
+          "twitterConsumerKey": null,
+          "twitterConsumerSecret": null,
+          "microsoftAccountClientId": null,
+          "microsoftAccountClientSecret": null,
+          "microsoftAccountOAuthScopes": null
+        },
+        "cors": null,
+        "push": null,
+        "apiDefinition": null,
+        "autoSwapSlotName": null,
+        "localMySqlEnabled": false,
+        "managedServiceIdentityId": null,
+        "xManagedServiceIdentityId": null,
+        "ipSecurityRestrictions": null,
+        "http20Enabled": false,
+        "minTlsVersion": "1.0",
+        "ftpsState": "AllAllowed"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_api_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-api-test/deployments/123456789101112'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_api_name'), '/', parameters('deployments_123456789101112_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101112_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"660a222f72401cc8108f73fcf798084b0b84532e\",\"buildId\":\"67\",\"releaseId\":\"29\",\"buildNumber\":\"67\",\"releaseName\":\"Release-16\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-05-05T02:54:24.226054Z",
+        "endTime": "2018-05-05T02:54:24.226054Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_api_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-api-test/deployments/123456789101113'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_api_name'), '/', parameters('deployments_123456789101113_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101113_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"71ef3eb73b7336dc391066693d248abf787930e1\",\"buildId\":\"61\",\"releaseId\":\"27\",\"buildNumber\":\"61\",\"releaseName\":\"Release-8\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-05-21T15:43:53.656576Z",
+        "endTime": "2018-05-21T15:43:53.656576Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_api_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-api-test/deployments/123456789101114'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_api_name'), '/', parameters('deployments_123456789101114_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101114_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"a109b90883eb6bc6a2d63aca22376d100b2e84d2\",\"buildId\":\"60\",\"releaseId\":\"26\",\"buildNumber\":\"60\",\"releaseName\":\"Release-7\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-05-21T15:29:16.054895Z",
+        "endTime": "2018-05-21T15:29:16.054895Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_api_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-api-test/deployments/123456789101115'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_api_name'), '/', parameters('deployments_123456789101115_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101115_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"ebac8863358fcde3ecab41bbe4ef831a9b4d481a\",\"buildId\":\"59\",\"releaseId\":\"25\",\"buildNumber\":\"59\",\"releaseName\":\"Release-6\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-05-21T00:18:15.932473Z",
+        "endTime": "2018-05-21T00:18:15.932473Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_api_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-api-test/deployments/123456789101116'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_api_name'), '/', parameters('deployments_123456789101116_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101116_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"479ee76c8fc261f605f0bf3e2ccd63ae94ba879b\",\"buildId\":\"58\",\"releaseId\":\"24\",\"buildNumber\":\"58\",\"releaseName\":\"Release-5\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-06-02T15:16:53.476098Z",
+        "endTime": "2018-06-02T15:16:53.476098Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_api_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-api-test/deployments/123456789101117'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_api_name'), '/', parameters('deployments_123456789101117_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101117_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"8d6779046f663c01f1f1ad9ef18fc3c4595aba37\",\"buildId\":\"56\",\"releaseId\":\"23\",\"buildNumber\":\"56\",\"releaseName\":\"Release-4\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-05-21T19:46:28.28038Z",
+        "endTime": "2018-05-21T19:46:28.28038Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_api_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-api-test/deployments/123456789101118'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_api_name'), '/', parameters('deployments_123456789101118_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101118_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"031d39cad485ea1bf880450d1201458ed47395ca\",\"buildId\":\"55\",\"releaseId\":\"22\",\"buildNumber\":\"55\",\"releaseName\":\"Release-3\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-05-23T19:09:28.263341Z",
+        "endTime": "2018-05-23T19:09:28.263341Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_api_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-api-test/deployments/123456789101119'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_api_name'), '/', parameters('deployments_123456789101119_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101119_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"f843e41f3f55b0d645242e4b01231065fd6527f2\",\"buildId\":\"54\",\"releaseId\":\"21\",\"buildNumber\":\"54\",\"releaseName\":\"Release-2\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-05-23T18:42:44.287755Z",
+        "endTime": "2018-05-23T18:42:44.287755Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_api_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-api-test/deployments/123456789101120'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_api_name'), '/', parameters('deployments_123456789101120_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101120_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"5cdcb729faa3d7ee2a18703a56ea0562bf59a68e\",\"buildId\":\"53\",\"releaseId\":\"20\",\"buildNumber\":\"53\",\"releaseName\":\"Release-1\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-05-23T18:16:03.504827Z",
+        "endTime": "2018-05-23T18:16:03.504827Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_api_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-api-test/deployments/123456789101121'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_api_name'), '/', parameters('deployments_123456789101121_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101121_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"b59495a08982c75e998ef92980b002a6ad1a3981\",\"buildId\":\"51\",\"releaseId\":\"19\",\"buildNumber\":\"51\",\"releaseName\":\"Release-15\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-05-21T14:34:13.460589Z",
+        "endTime": "2018-05-21T14:34:13.460589Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_api_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourceGroups/fake-rg/providers/Microsoft.Web/sites/fake2-test/config/web'.",
+      "type": "Microsoft.Web/sites/config",
+      "name": "[concat(parameters('sites_fake2_name'), '/', parameters('config_web_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "numberOfWorkers": 1,
+        "defaultDocuments": [
+          "Default.htm",
+          "Default.html",
+          "Default.asp",
+          "index.htm",
+          "index.html",
+          "iisstart.htm",
+          "default.aspx",
+          "index.php",
+          "hostingstart.html"
+        ],
+        "netFrameworkVersion": "v4.0",
+        "phpVersion": "",
+        "pythonVersion": "",
+        "nodeVersion": "",
+        "linuxFxVersion": "DOCKER|fakeregistry.azurecr.io/fake2-func-linux:67",
+        "windowsFxVersion": null,
+        "requestTracingEnabled": false,
+        "remoteDebuggingEnabled": false,
+        "remoteDebuggingVersion": "VS2012",
+        "httpLoggingEnabled": true,
+        "logsDirectorySizeLimit": 35,
+        "detailedErrorLoggingEnabled": false,
+        "publishingUsername": "[concat('$', parameters('sites_fake2_name'))]",
+        "publishingPassword": null,
+        "appSettings": null,
+        "metadata": null,
+        "connectionStrings": null,
+        "machineKey": null,
+        "handlerMappings": null,
+        "documentRoot": null,
+        "scmType": "None",
+        "use32BitWorkerProcess": true,
+        "webSocketsEnabled": false,
+        "alwaysOn": true,
+        "javaVersion": null,
+        "javaContainer": null,
+        "javaContainerVersion": null,
+        "appCommandLine": "",
+        "managedPipelineMode": "Integrated",
+        "virtualApplications": [
+          {
+            "virtualPath": "/",
+            "physicalPath": "site\\wwwroot",
+            "preloadEnabled": true,
+            "virtualDirectories": null
+          }
+        ],
+        "winAuthAdminState": 0,
+        "winAuthTenantState": 0,
+        "customAppPoolIdentityAdminState": false,
+        "customAppPoolIdentityTenantState": false,
+        "runtimeADUser": null,
+        "runtimeADUserPassword": null,
+        "loadBalancing": "LeastRequests",
+        "routingRules": [],
+        "experiments": {
+          "rampUpRules": []
+        },
+        "limits": null,
+        "autoHealEnabled": false,
+        "autoHealRules": null,
+        "tracingOptions": null,
+        "vnetName": "",
+        "siteAuthEnabled": false,
+        "siteAuthSettings": {
+          "enabled": null,
+          "unauthenticatedClientAction": null,
+          "tokenStoreEnabled": null,
+          "allowedExternalRedirectUrls": null,
+          "defaultProvider": null,
+          "clientId": null,
+          "clientSecret": null,
+          "issuer": null,
+          "allowedAudiences": null,
+          "additionalLoginParams": null,
+          "isAadAutoProvisioned": false,
+          "googleClientId": null,
+          "googleClientSecret": null,
+          "googleOAuthScopes": null,
+          "facebookAppId": null,
+          "facebookAppSecret": null,
+          "facebookOAuthScopes": null,
+          "twitterConsumerKey": null,
+          "twitterConsumerSecret": null,
+          "microsoftAccountClientId": null,
+          "microsoftAccountClientSecret": null,
+          "microsoftAccountOAuthScopes": null
+        },
+        "cors": null,
+        "push": null,
+        "apiDefinition": null,
+        "autoSwapSlotName": null,
+        "localMySqlEnabled": false,
+        "managedServiceIdentityId": null,
+        "xManagedServiceIdentityId": null,
+        "ipSecurityRestrictions": null,
+        "http20Enabled": false,
+        "minTlsVersion": "1.0",
+        "ftpsState": "AllAllowed"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake2_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourceGroups/fake-rg/providers/Microsoft.Web/sites/fake2-test/hostNameBindings/fake2-test.azurewebsites.net'.",
+      "type": "Microsoft.Web/sites/hostNameBindings",
+      "name": "[concat(parameters('sites_fake2_name'), '/', parameters('hostNameBindings_fake2.azurewebsites.net_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "siteName": "[parameters('sites_fake2_name')]",
+        "domainId": null,
+        "hostNameType": "Verified"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake2_name'))]"
+      ]
+    },
+    {
+      "name": "[variables('fakesqlName')]",
+      "type": "Microsoft.Sql/servers",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2014-04-01-preview",
+      "dependsOn": [],
+      "tags": {
+        "displayName": "fakesql"
+      },
+      "properties": {
+        "administratorLogin": "[parameters('fakesqlAdminLogin')]",
+        "administratorLoginPassword": "[parameters('fakesqlAdminLoginPassword')]"
+      },
+      "resources": [
+        {
+          "name": "AllowAllWindowsAzureIps",
+          "type": "firewallrules",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2014-04-01-preview",
+          "dependsOn": [
+            "[resourceId('Microsoft.Sql/servers', variables('fakesqlName'))]"
+          ],
+          "properties": {
+            "startIpAddress": "0.0.0.0",
+            "endIpAddress": "0.0.0.0"
+          }
+        },
+        {
+          "name": "[parameters('fakesqldisplayName')]",
+          "type": "databases",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2014-04-01-preview",
+          "dependsOn": [
+            "[resourceId('Microsoft.Sql/servers', variables('fakesqlName'))]"
+          ],
+          "tags": {
+            "displayName": "fakesqldisplay"
+          },
+          "properties": {
+            "collation": "[parameters('fakesqldisplayCollation')]",
+            "edition": "[parameters('fakesqldisplayEdition')]",
+            "maxSizeBytes": "1073741824",
+            "requestedServiceObjectiveName": "[parameters('fakesqldisplayRequestedServiceObjectiveName')]"
+          }
+        }
+      ]
+    }
+  ]
+}

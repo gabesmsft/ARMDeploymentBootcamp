@@ -1,0 +1,67 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "_artifactsLocation": {
+      "type": "string"
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring"
+    },
+    "webSiteName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "linkedfarmPlanName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "linkedfarmResourceGroup": {
+      "type": "string",
+      "minLength": 1
+    },
+    "linkedfarmRegion": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "variables": {
+    "linkedfarmtemplateTemplateFolder": "nestedtemplates",
+    "linkedfarmtemplateTemplateFileName": "linkedfarmtemplate.json",
+    "linkedfarmtemplateTemplateParametersFileName": "linkedfarmtemplate.parameters.json"
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-08-01",
+      "name": "[parameters('webSiteName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[parameters('linkedFarmRegion')]",
+      "properties": {
+        "name": "[parameters('webSiteName')]",
+        "serverFarmId": "[reference('linkedfarmTemplate').outputs.hostingPlanResourceId.value]"
+      },
+      "dependsOn": [
+        "linkedfarmtemplate"
+      ]
+    },
+    {
+      "name": "linkedfarmtemplate",
+      "type": "Microsoft.Resources/deployments",
+      "resourceGroup": "[parameters('linkedfarmResourceGroup')]",
+      "apiVersion": "2017-05-10",
+      "dependsOn": [],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), '/', variables('linkedfarmtemplateTemplateFolder'), '/', variables('linkedfarmtemplateTemplateFileName'), parameters('_artifactsLocationSasToken'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "hostingPlanName": { "value": "[parameters('linkedfarmPlanName')]" },
+          "region": { "value": "[parameters('linkedFarmRegion')]" }
+        }
+      }
+    }
+  ],
+  "outputs": {}
+}

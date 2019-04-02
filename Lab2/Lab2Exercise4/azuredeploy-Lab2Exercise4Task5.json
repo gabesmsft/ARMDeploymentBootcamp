@@ -1,0 +1,157 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "env": {
+      "type": "String"
+    },
+    "location": {
+      "defaultValue": "eastus",
+      "type": "String"
+    },
+    "sites_fake_api_name": {
+      "type": "String"
+    },
+    "serverfarms_fake_plan_fn": {
+      "type": "String"
+    },
+    "deployments_123456789101112_name": {
+      "type": "String"
+    },
+    "deployments_123456789101113_name": {
+      "type": "String"
+    },
+    "deployments_123456789101114_name": {
+      "type": "String"
+    },
+    "deployments_123456789101115_name": {
+      "type": "String"
+    },
+    "deployments_123456789101116_name": {
+      "type": "String"
+    },
+    "deployments_123456789101117_name": {
+      "type": "String"
+    },
+    "deployments_123456789101118_name": {
+      "type": "String"
+    },
+    "deployments_123456789101119_name": {
+      "type": "String"
+    },
+    "deployments_123456789101120_name": {
+      "type": "String"
+    },
+    "deployments_123456789101121_name": {
+      "type": "String"
+    },
+    "deployments_123456789101122_name": {
+      "type": "String"
+    }
+  },
+  "variables": {
+
+  },
+  "resources": [
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourceGroups/fake-rg/providers/Microsoft.Web/serverfarms/fake-plan-fn'.",
+      "type": "Microsoft.Web/serverfarms",
+      "sku": {
+        "name": "S1",
+        "tier": "Standard",
+        "size": "1",
+        "family": "S",
+        "capacity": 1
+      },
+      "kind": "linux",
+      "name": "[parameters('serverfarms_fake_plan_fn')]",
+      "apiVersion": "2016-09-01",
+      "location": "East US",
+      "tags": {
+        "ENV": "[parameters('env')]"
+      },
+      "scale": null,
+      "properties": {
+        "name": "[parameters('serverfarms_fake_plan_fn')]",
+        "workerTierName": null,
+        "adminSiteName": null,
+        "hostingEnvironmentProfile": null,
+        "perSiteScaling": false
+      },
+      "dependsOn": []
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourceGroups/fake-rg/providers/Microsoft.Web/sites/fake-api-test'.",
+      "type": "Microsoft.Web/sites",
+      "kind": "app",
+      "name": "[parameters('sites_fake_api_name')]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "tags": {
+        "ENV": "[parameters('env')]"
+      },
+      "scale": null,
+      "properties": {
+        "enabled": true,
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_fake_plan_fn'))]",
+        "reserved": true,
+        "siteConfig": null,
+        "scmSiteAlsoStopped": false,
+        "hostingEnvironmentProfile": null,
+        "clientAffinityEnabled": true,
+        "clientCertEnabled": false,
+        "hostNamesDisabled": false,
+        "containerSize": 0,
+        "dailyMemoryTimeQuota": 0,
+        "cloningInfo": null
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_fake_plan_fn'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-api-test/deployments/123456789101112'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_api_name'), '/', parameters('deployments_123456789101112_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101112_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"660a222f72401cc8108f73fcf798084b0b84532e\",\"buildId\":\"67\",\"releaseId\":\"29\",\"buildNumber\":\"67\",\"releaseName\":\"Release-16\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-05-05T02:54:24.226054Z",
+        "endTime": "2018-05-05T02:54:24.226054Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_api_name'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/fakesubscriptionId/resourcegroups/fake-rg/providers/Microsoft.Web/sites/fake-api-test/deployments/123456789101113'.",
+      "type": "Microsoft.Web/sites/deployments",
+      "name": "[concat(parameters('sites_fake_api_name'), '/', parameters('deployments_123456789101113_name'))]",
+      "apiVersion": "2016-08-01",
+      "location": "East US",
+      "scale": null,
+      "properties": {
+        "id": "[parameters('deployments_123456789101113_name')]",
+        "status": 4,
+        "authorEmail": "",
+        "author": "Firstname Lastname",
+        "deployer": "VSTS",
+        "message": "{\"type\":\"Deployment\",\"commitId\":\"71ef3eb73b7336dc391066693d248abf787930e1\",\"buildId\":\"61\",\"releaseId\":\"27\",\"buildNumber\":\"61\",\"releaseName\":\"Release-8\",\"repoProvider\":\"GitHub\",\"collectionUrl\":\"https://fake2group-ts.visualstudio.com/\",\"teamProject\":\"7a29c626-0dc2-43ea-b476-46f3748cbe79\",\"slotName\":\"production\"}",
+        "startTime": "2018-05-21T15:43:53.656576Z",
+        "endTime": "2018-05-21T15:43:53.656576Z",
+        "active": false
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('sites_fake_api_name'))]"
+      ]
+    }
+  ]
+}
